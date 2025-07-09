@@ -11,12 +11,13 @@ from a2a.types import (
     AgentSkill,
 )
 from agent import create_agent
-from agent_executor import KarleyAgentExecutor
+
 from dotenv import load_dotenv
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
+from agent_executor import LakminaAgentExecutor
 
 load_dotenv()
 
@@ -28,7 +29,6 @@ class MissingAPIKeyError(Exception):
     """Exception for missing API key."""
 
     pass
-
 
 def main():
     """Starts the agent server."""
@@ -45,14 +45,14 @@ def main():
         capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
             id="check_schedule",
-            name="Check Karley's Schedule",
-            description="Checks Karley's availability for a pickleball game on a given date.",
-            tags=["scheduling", "calendar"],
-            examples=["Is Karley free to play pickleball tomorrow?"],
+            name="Check Lakmina's Schedule",
+            description="Checks Lakmina's availability for meetings at Inter on a given date.",
+            tags=["scheduling", "calendar", "meeting", "inter"],
+            examples=["Is Lakmina free for a meeting tomorrow?"],
         )
         agent_card = AgentCard(
-            name="Karley Agent",
-            description="An agent that manages Karley's schedule for pickleball games.",
+            name="Lakmina Agent",
+            description="An agent that manages Lakmina's meeting schedule at Inter.",
             url=f"http://{host}:{port}/",
             version="1.0.0",
             defaultInputModes=["text/plain"],
@@ -69,7 +69,7 @@ def main():
             session_service=InMemorySessionService(),
             memory_service=InMemoryMemoryService(),
         )
-        agent_executor = KarleyAgentExecutor(runner)
+        agent_executor = LakminaAgentExecutor(runner)
 
         request_handler = DefaultRequestHandler(
             agent_executor=agent_executor,
@@ -86,7 +86,6 @@ def main():
     except Exception as e:
         logger.error(f"An error occurred during server startup: {e}")
         exit(1)
-
 
 if __name__ == "__main__":
     main()

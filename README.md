@@ -44,7 +44,7 @@ uv run --active .
 
 ### Terminal 3: Run Karley Agent
 ```bash
-cd karley_agent_adk
+cd lakmina_agent_adk
 uv venv
 source .venv/bin/activate
 uv run --active .

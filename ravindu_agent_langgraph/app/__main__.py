@@ -38,10 +38,10 @@ def main():
         capabilities = AgentCapabilities(streaming=True, pushNotifications=True)
         skill = AgentSkill(
             id="schedule_pickleball",
-            name="Pickleball Scheduling Tool",
-            description="Helps with finding Ravindu's availability for pickleball",
-            tags=["scheduling", "pickleball"],
-            examples=["Are you free to play pickleball on Saturday?"],
+            name="meeting Scheduling Tool",
+            description="Helps with finding Ravindu's availability for meeting",
+            tags=["scheduling", "meeting"],
+            examples=["Are you free to play meeting on Saturday?"],
         )
         agent_card = AgentCard(
             name="Ravindu Agent",

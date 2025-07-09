@@ -30,8 +30,9 @@ class MissingAPIKeyError(Exception):
     """Exception for missing API key."""
 
 
+
 def main():
-    """Entry point for Nate's Scheduling Agent."""
+    """Entry point for Chamaras's Meeting Scheduler Agent."""
     host = "localhost"
     port = 10003
     try:
@@ -40,20 +41,20 @@ def main():
 
         capabilities = AgentCapabilities(streaming=False)
         skill = AgentSkill(
-            id="availability_checker",
-            name="Availability Checker",
-            description="Check my calendar to see when I'm available for a pickleball game.",
-            tags=["schedule", "availability", "calendar"],
+            id="meeting_scheduler",
+            name="Meeting Scheduler",
+            description="Check my calendar to see when I'm available for meetings at Inter.",
+            tags=["schedule", "availability", "calendar", "meeting", "inter"],
             examples=[
-                "Are you free tomorrow?",
-                "Can you play pickleball next Tuesday at 5pm?",
+                "Are you free for a meeting tomorrow?",
+                "Can we schedule a meeting next Tuesday at 5pm?",
             ],
         )
 
         agent_host_url = os.getenv("HOST_OVERRIDE") or f"http://{host}:{port}/"
         agent_card = AgentCard(
-            name="Nate Agent",
-            description="A friendly agent to help you schedule a pickleball game with Nate.",
+            name="Chamara",
+            description="A friendly agent to help you schedule meetings at Inter.",
             url=agent_host_url,
             version="1.0.0",
             defaultInputModes=SchedulingAgent.SUPPORTED_CONTENT_TYPES,
@@ -78,7 +79,6 @@ def main():
     except Exception as e:
         logger.error(f"An error occurred during server startup: {e}")
         exit(1)
-
 
 if __name__ == "__main__":
     main()
