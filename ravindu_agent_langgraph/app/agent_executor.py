@@ -11,17 +11,17 @@ from a2a.types import (
     UnsupportedOperationError,
 )
 from a2a.utils.errors import ServerError
-from app.agent import KaitlynAgent
+from app.agent import RavinduAgent
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class KaitlynAgentExecutor(AgentExecutor):
-    """Kaitlyn's Scheduling AgentExecutor."""
+class RavinduAgentExecutor(AgentExecutor):
+    """Ravindu's Scheduling AgentExecutor."""
 
     def __init__(self):
-        self.agent = KaitlynAgent()
+        self.agent = RavinduAgent()
 
     async def execute(
         self,

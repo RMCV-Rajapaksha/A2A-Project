@@ -14,11 +14,11 @@ from pydantic import BaseModel, Field
 memory = MemorySaver()
 
 
-def generate_kaitlyns_calendar() -> dict[str, list[str]]:
-    """Generates Kaitlyn's calendar for the next 7 days."""
+def generate_ravindus_calendar() -> dict[str, list[str]]:
+    """Generates Ravindu's calendar for the next 7 days."""
     calendar = {}
     today = date.today()
-    # Kaitlyn's availability: evenings on weekdays, more free on weekends.
+    # Ravindu's availability: evenings on weekdays, more free on weekends.
     for i in range(7):
         current_date = today + timedelta(days=i)
         date_str = current_date.strftime("%Y-%m-%d")
@@ -39,7 +39,7 @@ def generate_kaitlyns_calendar() -> dict[str, list[str]]:
     return calendar
 
 
-KAITLYNS_CALENDAR = generate_kaitlyns_calendar()
+RAVINDUS_CALENDAR = generate_ravindus_calendar()
 
 
 class AvailabilityToolInput(BaseModel):
@@ -56,7 +56,7 @@ class AvailabilityToolInput(BaseModel):
 
 @tool(args_schema=AvailabilityToolInput)
 def get_availability(date_range: str) -> str:
-    """Use this to get Kaitlyn's availability for a given date or date range."""
+    """Use this to get Ravindu's availability for a given date or date range."""
     dates_to_check = [d.strip() for d in date_range.split("to")]
     start_date_str = dates_to_check[0]
     end_date_str = dates_to_check[-1]
@@ -73,15 +73,15 @@ def get_availability(date_range: str) -> str:
         for i in range(delta.days + 1):
             day = start + timedelta(days=i)
             date_str = day.strftime("%Y-%m-%d")
-            available_slots = KAITLYNS_CALENDAR.get(date_str, [])
+            available_slots = RAVINDUS_CALENDAR.get(date_str, [])
             if available_slots:
                 availability = (
-                    f"On {date_str}, Kaitlyn is available at: "
+                    f"On {date_str}, Ravindu is available at: "
                     f"{', '.join(available_slots)}."
                 )
                 results.append(availability)
             else:
-                results.append(f"Kaitlyn is not available on {date_str}.")
+                results.append(f"Ravindu is not available on {date_str}.")
 
         return "\n".join(results)
 
@@ -99,14 +99,14 @@ class ResponseFormat(BaseModel):
     message: str
 
 
-class KaitlynAgent:
-    """KaitlynAgent - a specialized assistant for scheduling."""
+class RavinduAgent:
+    """RavinduAgent - a specialized assistant for scheduling."""
 
     SUPPORTED_CONTENT_TYPES = ["text", "text/plain"]
 
     SYSTEM_INSTRUCTION = (
-        "You are Kaitlyn's scheduling assistant. "
-        "Your sole purpose is to use the 'get_availability' tool to answer questions about Kaitlyn's schedule for playing pickleball. "
+        "You are Ravindu's scheduling assistant. "
+        "Your sole purpose is to use the 'get_availability' tool to answer questions about Ravindu's schedule for playing pickleball. "
         "You will be provided with the current date to help you understand relative date queries like 'tomorrow' or 'next week'. "
         "Use this information to correctly call the tool with a specific date (e.g., 'YYYY-MM-DD'). "
         "If the user asks about anything other than scheduling pickleball, "
@@ -152,7 +152,7 @@ class KaitlynAgent:
                 yield {
                     "is_task_complete": False,
                     "require_user_input": False,
-                    "content": "Checking Kaitlyn's availability...",
+                    "content": "Checking Ravindu's availability...",
                 }
             elif isinstance(message, ToolMessage):
                 yield {

@@ -12,8 +12,8 @@ from a2a.types import (
     AgentCard,
     AgentSkill,
 )
-from app.agent import KaitlynAgent
-from app.agent_executor import KaitlynAgentExecutor
+from app.agent import RavinduAgent
+from app.agent_executor import RavinduAgentExecutor
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,8 +26,9 @@ class MissingAPIKeyError(Exception):
     """Exception for missing API key."""
 
 
+
 def main():
-    """Starts Kaitlyn's Agent server."""
+    """Starts Ravindu's Agent server."""
     host = "localhost"
     port = 10004
     try:
@@ -38,24 +39,24 @@ def main():
         skill = AgentSkill(
             id="schedule_pickleball",
             name="Pickleball Scheduling Tool",
-            description="Helps with finding Kaitlyn's availability for pickleball",
+            description="Helps with finding Ravindu's availability for pickleball",
             tags=["scheduling", "pickleball"],
             examples=["Are you free to play pickleball on Saturday?"],
         )
         agent_card = AgentCard(
-            name="Kaitlynn Agent",
+            name="Ravindu Agent",
             description="Helps with scheduling pickleball games",
             url=f"http://{host}:{port}/",
             version="1.0.0",
-            defaultInputModes=KaitlynAgent.SUPPORTED_CONTENT_TYPES,
-            defaultOutputModes=KaitlynAgent.SUPPORTED_CONTENT_TYPES,
+            defaultInputModes=RavinduAgent.SUPPORTED_CONTENT_TYPES,
+            defaultOutputModes=RavinduAgent.SUPPORTED_CONTENT_TYPES,
             capabilities=capabilities,
             skills=[skill],
         )
 
         httpx_client = httpx.AsyncClient()
         request_handler = DefaultRequestHandler(
-            agent_executor=KaitlynAgentExecutor(),
+            agent_executor=RavinduAgentExecutor(),
             task_store=InMemoryTaskStore(),
             push_notifier=InMemoryPushNotifier(httpx_client),
         )
