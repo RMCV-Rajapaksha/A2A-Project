@@ -89,7 +89,7 @@ Once all agents are running, the Host Agent will coordinate the scheduling proce
    Suggests room-available time slots to the user and confirms the preferred time.
 
 6. **Book the Room**  
-   Uses `book_pickleball_court` (or similar) to finalize the booking using the `start_time` and `end_time`.
+   Uses `book_meeting` (or similar) to finalize the booking using the `start_time` and `end_time`.
 
 7. **Final Confirmation**  
    Relays booking details (including Booking ID) to the user.  
