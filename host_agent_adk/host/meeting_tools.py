@@ -1,29 +1,29 @@
 from datetime import date, datetime, timedelta
 from typing import Dict
 
-# In-memory database for court schedules, mapping date to a dictionary of time slots and party names
-COURT_SCHEDULE: Dict[str, Dict[str, str]] = {}
+# In-memory database for meeting room schedules, mapping date to a dictionary of time slots and company names
+MEETING_ROOM_SCHEDULE: Dict[str, Dict[str, str]] = {}
 
 
-def generate_court_schedule():
-    """Generates a schedule for the pickleball court for the next 7 days."""
-    global COURT_SCHEDULE
+def generate_meeting_room_schedule():
+    """Generates a schedule for the meeting room for the next 7 days."""
+    global MEETING_ROOM_SCHEDULE
     today = date.today()
     possible_times = [f"{h:02}:00" for h in range(8, 21)]  # 8 AM to 8 PM
 
     for i in range(7):
         current_date = today + timedelta(days=i)
         date_str = current_date.strftime("%Y-%m-%d")
-        COURT_SCHEDULE[date_str] = {time: "unknown" for time in possible_times}
+        MEETING_ROOM_SCHEDULE[date_str] = {time: "unknown" for time in possible_times}
 
 
 # Initialize the schedule when the module is loaded
-generate_court_schedule()
+generate_meeting_room_schedule()
 
 
-def list_court_availabilities(date: str) -> dict:
+def list_meeting_room_availabilities(date: str) -> dict:
     """
-    Lists the available and booked time slots for a pickleball court on a given date.
+    Lists the available and booked time slots for a meeting room on a given date.
 
     Args:
         date: The date to check, in YYYY-MM-DD format.
@@ -39,19 +39,19 @@ def list_court_availabilities(date: str) -> dict:
             "message": "Invalid date format. Please use YYYY-MM-DD.",
         }
 
-    daily_schedule = COURT_SCHEDULE.get(date)
+    daily_schedule = MEETING_ROOM_SCHEDULE.get(date)
     if not daily_schedule:
         return {
             "status": "success",
-            "message": f"The court is not open on {date}.",
+            "message": f"The meeting room is not open on {date}.",
             "schedule": {},
         }
 
     available_slots = [
-        time for time, party in daily_schedule.items() if party == "unknown"
+        time for time, company in daily_schedule.items() if company == "unknown"
     ]
     booked_slots = {
-        time: party for time, party in daily_schedule.items() if party != "unknown"
+        time: company for time, company in daily_schedule.items() if company != "unknown"
     }
 
     return {
@@ -62,20 +62,20 @@ def list_court_availabilities(date: str) -> dict:
     }
 
 
-def book_pickleball_court(
+def book_meeting_room(
     date: str, start_time: str, end_time: str, reservation_name: str
 ) -> dict:
     """
-    Books a pickleball court for a given date and time range under a reservation name.
+    Books a meeting room for a specified date and time range under a reservation name.
 
     Args:
-        date: The date of the reservation, in YYYY-MM-DD format.
-        start_time: The start time of the reservation, in HH:MM format.
-        end_time: The end time of the reservation, in HH:MM format.
-        reservation_name: The name for the reservation.
+        date: The date to book, in YYYY-MM-DD format.
+        start_time: Start time in HH:MM format.
+        end_time: End time in HH:MM format.
+        reservation_name: Name of the company or group reserving the room.
 
     Returns:
-        A dictionary confirming the booking or providing an error.
+        A dictionary with the status and a message.
     """
     try:
         start_dt = datetime.strptime(f"{date} {start_time}", "%Y-%m-%d %H:%M")
@@ -89,13 +89,13 @@ def book_pickleball_court(
     if start_dt >= end_dt:
         return {"status": "error", "message": "Start time must be before end time."}
 
-    if date not in COURT_SCHEDULE:
-        return {"status": "error", "message": f"The court is not open on {date}."}
+    if date not in MEETING_ROOM_SCHEDULE:
+        return {"status": "error", "message": f"The meeting room is not open on {date}."}
 
     if not reservation_name:
         return {
             "status": "error",
-            "message": "Cannot book a court without a reservation name.",
+            "message": "Cannot book a meeting room without a reservation name.",
         }
 
     required_slots = []
@@ -104,19 +104,19 @@ def book_pickleball_court(
         required_slots.append(current_time.strftime("%H:%M"))
         current_time += timedelta(hours=1)
 
-    daily_schedule = COURT_SCHEDULE.get(date, {})
+    daily_schedule = MEETING_ROOM_SCHEDULE.get(date, {})
     for slot in required_slots:
         if daily_schedule.get(slot, "booked") != "unknown":
-            party = daily_schedule.get(slot)
+            company = daily_schedule.get(slot)
             return {
                 "status": "error",
-                "message": f"The time slot {slot} on {date} is already booked by {party}.",
+                "message": f"The time slot {slot} on {date} is already booked by {company}.",
             }
 
     for slot in required_slots:
-        COURT_SCHEDULE[date][slot] = reservation_name
+        MEETING_ROOM_SCHEDULE[date][slot] = reservation_name
 
     return {
         "status": "success",
-        "message": f"Success! The pickleball court has been booked for {reservation_name} from {start_time} to {end_time} on {date}.",
+        "message": f"Success! The meeting room has been booked for {reservation_name} from {start_time} to {end_time} on {date}.",
     }

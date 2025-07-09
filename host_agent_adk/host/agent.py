@@ -25,9 +25,9 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 
-from .pickleball_tools import (
-    book_pickleball_court,
-    list_court_availabilities,
+from .meeting_tools import (
+    book_meeting_room,
+    list_meeting_room_availabilities,
 )
 from .remote_agent_connection import RemoteAgentConnections
 
@@ -95,8 +95,8 @@ class HostAgent:
 description="This Host agent orchestrates scheduling business meetings between companies by coordinating with company agents and booking meeting rooms.",
             tools=[
                 self.send_message,
-                book_pickleball_court,
-                list_court_availabilities,
+                book_meeting_room,
+                list_meeting_room_availabilities,
             ],
         )
 
@@ -221,7 +221,7 @@ def _get_initialized_host_agent_sync():
     """Synchronously creates and initializes the HostAgent."""
 
     async def _async_main():
-        # Hardcoded URLs for the friend agents
+        # Hardcoded URLs for the friend agents 
         friend_agent_urls = [
             "http://localhost:10002",  # Karley's Agent
             "http://localhost:10003",  # Nate's Agent
