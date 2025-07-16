@@ -103,7 +103,7 @@ Once all agents are running, the Host Agent will coordinate the scheduling proce
 - **Strict Tool Usage**: All decisions/actions must be based on tools, not assumptions.
 - **Agent Identity**: Each friend is represented by their respective agent:
   - `Chamara_Agent`
-  - `Kavindu_Agent`
+  - `Ravindu_Agent`
   - `Lakmina_Agent`
 - **System Date**:  
   `Today's Date (YYYY-MM-DD):` `{{ dynamically insert date }}`  
