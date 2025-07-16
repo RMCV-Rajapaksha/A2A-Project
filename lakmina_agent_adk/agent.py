@@ -60,7 +60,7 @@ def get_lakmina_meeting_availability(start_date: str, end_date: str) -> str:
 def create_agent() -> LlmAgent:
     """Constructs the ADK agent for Lakmina for meeting scheduling."""
     return LlmAgent(
-        model="gemini-2.5-flash-preview-04-17",
+        model="gemini-2.0-flash",
         name="Lakmina_Agent",
         instruction="""
             **Role:** You are Lakmina's meeting scheduling assistant at Inter.
