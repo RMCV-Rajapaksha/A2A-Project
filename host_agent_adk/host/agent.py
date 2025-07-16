@@ -88,7 +88,7 @@ class HostAgent:
 
     def create_agent(self) -> Agent:
         return Agent(
-            model="gemini-2.5-flash-preview-04-17",
+            model="gemini-2.0-flash",
             name="Host_Agent",
             instruction=self.root_instruction,
           # ...existing code...

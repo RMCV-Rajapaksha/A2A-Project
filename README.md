@@ -6,7 +6,7 @@ This application includes four agents:
 
 - **Host Agent**: Orchestrates the scheduling task.
 - **Chamara Agent**: Represents Chamara’s calendar and availability preferences.
-- **Kavindu Agent**: Represents Kavindu’s calendar and availability preferences.
+- **Ravindu Agent**: Represents Kavindu’s calendar and availability preferences.
 - **Lakmina Agent**: Represents Lakmina’s calendar and availability preferences.
 
 ---
