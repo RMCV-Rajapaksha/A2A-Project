@@ -57,25 +57,27 @@ class HostAgent:
     async def _async_init_components(self, remote_agent_addresses: List[str]):
         async with httpx.AsyncClient(timeout=30) as client:
             for address in remote_agent_addresses:
-                card_resolver = A2ACardResolver(client, address)
+                card_resolver = A2ACardResolver(client, address)  # Initialize card resolver
+
                 try:
-                    card = await card_resolver.get_agent_card()
+                    card = await card_resolver.get_agent_card()  # Get agent card
+                                               
                     remote_connection = RemoteAgentConnections(
-                        agent_card=card, agent_url=address
+                        agent_card=card, agent_url=address  # save this data in the connection
                     )
                     self.remote_agent_connections[card.name] = remote_connection
                     self.cards[card.name] = card
-                except httpx.ConnectError as e:
+                 except httpx.ConnectError as e:
                     print(f"ERROR: Failed to get agent card from {address}: {e}")
                 except Exception as e:
                     print(f"ERROR: Failed to initialize connection for {address}: {e}")
 
-        agent_info = [
+        agent_info = [        # make the list of card list using the card data
             json.dumps({"name": card.name, "description": card.description})
             for card in self.cards.values()
         ]
         print("agent_info:", agent_info)
-        self.agents = "\n".join(agent_info) if agent_info else "No friends found"
+        self.agents = "\n".join(agent_info) if agent_info else "No friends found"  #save every thing in the self agent class variable
 
     @classmethod
     async def create(
@@ -84,7 +86,7 @@ class HostAgent:
     ):
         instance = cls()
         await instance._async_init_components(remote_agent_addresses)
-        return instance
+        return instance 
 
     def create_agent(self) -> Agent:
         return Agent(
@@ -169,11 +171,11 @@ description="This Host agent orchestrates scheduling business meetings between c
                     "updates": "The host agent is thinking...",
                 }
 
-    async def send_message(self, agent_name: str, task: str, tool_context: ToolContext):
+    async def send_message(self, agent_name: str, task: str, tool_context: ToolContext): #send the msg to the other agent withe task
         """Sends a task to a remote friend agent."""
-        if agent_name not in self.remote_agent_connections:
+        if agent_name not in self.remote_agent_connections:  #check the agent 
             raise ValueError(f"Agent {agent_name} not found")
-        client = self.remote_agent_connections[agent_name]
+        client = self.remote_agent_connections[agent_name]  
 
         if not client:
             raise ValueError(f"Client not available for {agent_name}")
@@ -196,7 +198,7 @@ description="This Host agent orchestrates scheduling business meetings between c
 
         message_request = SendMessageRequest(
             id=message_id, params=MessageSendParams.model_validate(payload)
-        )
+        ) #send the mash
         send_response: SendMessageResponse = await client.send_message(message_request)
         print("send_response", send_response)
 
@@ -214,7 +216,7 @@ description="This Host agent orchestrates scheduling business meetings between c
             for artifact in json_content["result"]["artifacts"]:
                 if artifact.get("parts"):
                     resp.extend(artifact["parts"])
-        return resp
+        return resp  #
 
 
 def _get_initialized_host_agent_sync():

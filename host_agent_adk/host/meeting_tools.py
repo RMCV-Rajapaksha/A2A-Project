@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta
 from typing import Dict
 
+
 # In-memory database for meeting room schedules, mapping date to a dictionary of time slots and company names
 MEETING_ROOM_SCHEDULE: Dict[str, Dict[str, str]] = {}
 
@@ -15,7 +16,6 @@ def generate_meeting_room_schedule():
         current_date = today + timedelta(days=i)
         date_str = current_date.strftime("%Y-%m-%d")
         MEETING_ROOM_SCHEDULE[date_str] = {time: "unknown" for time in possible_times}
-
 
 # Initialize the schedule when the module is loaded
 generate_meeting_room_schedule()

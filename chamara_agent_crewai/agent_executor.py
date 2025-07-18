@@ -32,8 +32,8 @@ class SchedulingAgentExecutor(AgentExecutor):
 
         updater = TaskUpdater(event_queue, context.task_id, context.context_id)
         if not context.current_task:
-            await updater.submit()
-        await updater.start_work()
+            await updater.submit() #task is submitted 
+        await updater.start_work()  # working on the task
 
         if self._validate_request(context):
             raise ServerError(error=InvalidParamsError())
